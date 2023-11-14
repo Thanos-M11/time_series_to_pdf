@@ -1,4 +1,5 @@
 import random
+import itertools
 from datetime import date, datetime
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
@@ -76,18 +77,17 @@ def validate_years(years) -> bool:
 
 def random_time_series(n_years: int=5) -> list[Sales]:
     """Creates a random 4 times per month sales demand for n years"""    
-    random.seed(100)
+    # random.seed(100)
     journal: list[Sales] =  []
     start_year = datetime.now().year - n_years
-    for year in list(range(start_year, n_years + start_year)):
-        for month in MONTHS:
-            for day in DAYS:
-                journal.append(
-                        Sales(
-                            salesdate=f"{day:02}-{month}-{year}", 
-                            sales=random.randrange(20, 100)
-                        )
-                    )
+    for year, month, day in itertools.product(list(range(start_year, n_years + start_year)), MONTHS, DAYS):
+        journal.append(
+                Sales(
+                    salesdate=f"{day:02}-{month}-{year}", 
+                    sales=random.randrange(20, 100)
+                )
+            )
+
     return journal
 
 
