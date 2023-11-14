@@ -1,3 +1,5 @@
+import itertools
+
 from project import (
     MONTHS, 
     DAYS, 
@@ -39,14 +41,12 @@ def test_random_time_series():
     assert isinstance(random_time_series(2), list)
     assert isinstance(random_time_series(2), object)
     
-    for ds in list(range(2, 3)):
-        for m in range(len(list(MONTHS))):
-            for d in range(len(DAYS)):
-                assert hasattr(random_time_series(ds)[m*d], "salesdate")
-                assert hasattr(random_time_series(ds)[m*d], "sales")
-                assert hasattr(random_time_series(ds)[m*d], "month")
-                assert hasattr(random_time_series(ds)[m*d], "qrt")
-                assert hasattr(random_time_series(ds)[m*d], "year")
+    for ds, m, d in itertools.product(list(range(2, 3)), range(len(list(MONTHS))), range(len(DAYS))):
+        assert hasattr(random_time_series(ds)[m*d], "salesdate")
+        assert hasattr(random_time_series(ds)[m*d], "sales")
+        assert hasattr(random_time_series(ds)[m*d], "month")
+        assert hasattr(random_time_series(ds)[m*d], "qrt")
+        assert hasattr(random_time_series(ds)[m*d], "year")
 
 
 def test_sales_by_qrt():
